@@ -1,5 +1,5 @@
 from django.contrib import admin
-from pfimapp.models import User,TipoDocumento,Maestria,EstadoCivil,Sede
+from pfimapp.models import CustomUser,TipoDocumento,Maestria,EstadoCivil,Sede
 
 # Register your models here.
 # class UserAdmin(admin.ModelAdmin):
@@ -16,7 +16,7 @@ from pfimapp.models import User,TipoDocumento,Maestria,EstadoCivil,Sede
 #         super().save_model(request, obj, form, change)
 
 
-admin.site.register(User)
+admin.site.register(CustomUser)
 
 class TipoDocumentoAdmin(admin.ModelAdmin):
     search_fields = ['nombre']
