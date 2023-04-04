@@ -91,6 +91,7 @@ WSGI_APPLICATION = 'monolito.wsgi.application'
 #         'PORT': '3306'
 #     }
 # }
+
 DATABASES = {
     'default': dj_database_url.config(
     default='postgresql://postgres:postgres@localhost/postgres',

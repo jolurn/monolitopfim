@@ -24,6 +24,7 @@
       href="https://fonts.googleapis.com/css2?family=Alumni+Sans:ital,wght@1,500;1,600;1,700;1,900&display=swap"
       rel="stylesheet"
     />
+    
     <link
       rel="stylesheet"
       type="text/css"
@@ -61,12 +62,17 @@
                 >Reporte Academico</a
               >
             </li>
+            
+            <li class="nav-item">
+              <a class="nav-link active" href="{% url 'reporteMatricula' %}"
+                >Matricula</a
+              >
+            </li>
             <li class="nav-item">
               <a class="nav-link active" href="{% url 'edit_user' %}"
                 >Editar Usuario</a
               >
             </li>
-
             <li class="nav-item">
               <a class="nav-link active" href="/logout">Cerrar sesión</a>
             </li>

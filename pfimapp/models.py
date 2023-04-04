@@ -337,8 +337,7 @@ class Matricula(models.Model):
 
 class DetalleMatricula(models.Model):
 
-    matricula = models.ForeignKey(
-        Matricula, null=True, on_delete=models.SET_NULL)
+    matricula = models.ForeignKey(Matricula, null=True, on_delete=models.SET_NULL)
     seccion = models.ForeignKey(Seccion, null=True, on_delete=models.SET_NULL)
     promedioTrabajos = models.FloatField(null=True, blank=True)
     examenParcial = models.FloatField(null=True, blank=True)

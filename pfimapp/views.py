@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import  AuthenticationForm
-from pfimapp.models import ReporteEconomico,ReporteEcoConceptoPago,CustomUser,Matricula,DetalleMatricula
+from pfimapp.models import ReporteEconomico,ReporteEcoConceptoPago,CustomUser,Matricula,DetalleMatricula,Periodo
 from django.contrib.auth import login, logout, authenticate
 
 from django.contrib.auth.forms import PasswordChangeForm
@@ -66,6 +66,24 @@ def reporteAcademico(request):
    
 
     return render(request, 'reporteAcademico.html', {'reporteAcademicos': detalleAcademico, 'reporteEconomicos': detalleRepoEco, 'hay_registro_nulo': hay_registro_nulo, 'hay_estadoBoletaPag_pendiente':hay_estadoBoletaPag_pendiente})
+
+@login_required
+def reporteMatricula(request):  
+    matriculas = Matricula.objects.filter(alumno__usuario=request.user, estado="A")           
+
+    return render(request, 'matricula.html', {'matriculas': matriculas})
+
+@login_required
+def detalleMatricula(request, matricula_id):
+    detalleAcademico = DetalleMatricula.objects.filter(matricula=matricula_id)
+    
+    if detalleAcademico.exists():
+        periodo = detalleAcademico.first().seccion.periodo
+    else:
+        periodo = None
+
+    return render(request, 'detalleMatricula.html', {'detalleAcademico': detalleAcademico, 'periodo': periodo})
+
 
 
 @login_required

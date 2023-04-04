@@ -35,12 +35,14 @@
           <td>{{ detalle.periodo }}</td>
           <td>{{ detalle.monto }}</td>
           <td>{{ detalle.numeroRecibo }}</td>
-          {% if detalle.estadoBoletaPago != 'CANCELADO' %}
-          <td class="letraAzul"><b>{{ detalle.estadoBoletaPago }}</b></td>
+          {% if detalle.estadoBoletaPago.id == 2 %}
+            <td class="letraRoja">
+              <b>{{ detalle.estadoBoletaPago }}</b>
+            </td>
           {% else %}
-          <td class="letraRoja">
-            <b>{{ detalle.estadoBoletaPago }}</b>
-          </td>
+            <td class="letraAzul">
+              <b>{{ detalle.estadoBoletaPago }}</b>
+            </td>
           {% endif %}
         </tr>
         {% endfor %}

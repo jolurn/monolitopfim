@@ -23,7 +23,8 @@ urlpatterns = [
     path('signup/', views.signup, name='signup'),  
 
     path('editUser/', views.edit_user, name='edit_user'),
-
+    path('matricula/<int:matricula_id>/', views.detalleMatricula, name='detalle_matricula'),
+    path('reporteMatricula/', views.reporteMatricula, name='reporteMatricula'),  
     path('reporteAcademico/', views.reporteAcademico, name='reporteAcademico'),  
     path('reporteEconomico/', views.reporteEconomico, name='reporteEconomico'),  
     path('logout/', views.signout, name='logount'),
