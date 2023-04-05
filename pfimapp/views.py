@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import  AuthenticationForm
-from pfimapp.models import ReporteEconomico,ReporteEcoConceptoPago,CustomUser,Matricula,DetalleMatricula,Periodo
+from pfimapp.models import ReporteEconomico,ReporteEcoConceptoPago,CustomUser,Matricula,DetalleMatricula,Periodo,Sede,Maestria,TipoDocumento,EstadoCivil
 from django.contrib.auth import login, logout, authenticate
-
+from .forms import EditarPerfilForm
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
-
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import make_password
 
 # Create your views here.
 from pfimapp.forms import CustomUserCreationForm
@@ -48,10 +49,16 @@ def reporteEconomico(request):
 @login_required
 def reporteAcademico(request):
     reporteEcon = ReporteEconomico.objects.filter(alumno__usuario=request.user, estado="A")
-    detalleRepoEco = ReporteEcoConceptoPago.objects.filter(reporteEconomico=reporteEcon.first(), estado="A")
+    if reporteEcon.exists():
+        detalleRepoEco = ReporteEcoConceptoPago.objects.filter(reporteEconomico=reporteEcon.first(), estado="A")
+    else:
+        detalleRepoEco = []
 
-    matricula = Matricula.objects.filter(alumno__usuario=request.user, estado="A")
-    detalleAcademico = DetalleMatricula.objects.filter(matricula=matricula.first(), estado="A")
+
+    # reporteEcon = ReporteEconomico.objects.filter(alumno__usuario=request.user, estado="A")
+    # detalleRepoEco = ReporteEcoConceptoPago.objects.filter(reporteEconomico=reporteEcon.first(), estado="A")
+
+    detalleAcademico = DetalleMatricula.objects.filter(matricula__alumno__usuario=request.user, estado="A")
     
     # Comprobar si hay algún registro con el campo 'numeroRecibo' nulo
     hay_registro_nulo = False
@@ -64,8 +71,36 @@ def reporteAcademico(request):
             hay_estadoBoletaPag_pendiente = True
             break
    
-
     return render(request, 'reporteAcademico.html', {'reporteAcademicos': detalleAcademico, 'reporteEconomicos': detalleRepoEco, 'hay_registro_nulo': hay_registro_nulo, 'hay_estadoBoletaPag_pendiente':hay_estadoBoletaPag_pendiente})
+
+@login_required
+def perfil(request):
+    maestrias = Maestria.objects.all()
+    sedes = Sede.objects.all()
+    tipoDocumentos = TipoDocumento.objects.all()
+    estadoCivils = EstadoCivil.objects.all()
+    context = {
+        'maestrias': maestrias,
+        'sedes': sedes,
+        'tipoDocumentos' : tipoDocumentos,
+        'estadoCivils': estadoCivils,
+        'form': EditarPerfilForm(instance=request.user, initial={'password': request.user.password}),
+    }
+    return render(request, 'perfil.html', context)
+
+
+@login_required
+def editar_perfil(request):
+    
+    if request.method == 'POST':
+        form = EditarPerfilForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Tu perfil ha sido actualizado con éxito!')
+            return redirect('perfil')
+    else:
+        form = EditarPerfilForm(instance=request.user)
+    return render(request, 'perfil.html', {'form': form})    
 
 @login_required
 def reporteMatricula(request):  
@@ -83,8 +118,6 @@ def detalleMatricula(request, matricula_id):
         periodo = None
 
     return render(request, 'detalleMatricula.html', {'detalleAcademico': detalleAcademico, 'periodo': periodo})
-
-
 
 @login_required
 def signout(request):

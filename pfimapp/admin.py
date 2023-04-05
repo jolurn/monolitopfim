@@ -138,7 +138,7 @@ admin.site.register(Sede, SedeAdmin)
 
 class EstadoCivilAdmin(admin.ModelAdmin):
     search_fields = ['nombre']
-    ordering = ['nombre']
+    ordering = ['nombre','fechaRegistro']
     # --- poner en solo lectura los input ---
     exclude = ('fechaRegistro', 'fechaModificado','usuarioPosgradoFIM', 'ipUsuario')
     readonly_fields = ('fechaRegistro', 'usuarioPosgradoFIM', 'ipUsuario')
@@ -156,6 +156,7 @@ admin.site.register(EstadoCivil, EstadoCivilAdmin)
 class EstadoAcademicoAdmin(admin.ModelAdmin):
     search_fields = ['nombre']
     ordering = ['nombre']
+    
     # --- poner en solo lectura los input ---
     exclude = ('fechaRegistro', 'fechaModificado','usuarioPosgradoFIM', 'ipUsuario')
     readonly_fields = ('fechaRegistro', 'fechaModificado','usuarioPosgradoFIM', 'ipUsuario')
@@ -168,14 +169,13 @@ class EstadoAcademicoAdmin(admin.ModelAdmin):
         obj.usuarioPosgradoFIM = request.user.apellidoPaterno+' '+request.user.apellidoMaterno+' '+request.user.primerNombre
         super().save_model(request, obj, form, change)
 
-
-
 admin.site.register(EstadoAcademico, EstadoAcademicoAdmin)
 
 
 class MaestriaAdmin(admin.ModelAdmin):
     search_fields = ['codigo']
     ordering = ['codigo']
+    # ordering = ['-id']
     # --- poner en solo lectura los input ---
     exclude = ('fechaRegistro', 'fechaModificado','usuarioPosgradoFIM', 'ipUsuario')
     readonly_fields = ('fechaRegistro', 'usuarioPosgradoFIM', 'ipUsuario')

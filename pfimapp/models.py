@@ -100,7 +100,7 @@ class UsuarioManager(BaseUserManager):
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
 
-    email = models.EmailField(unique=True)
+    email = models.EmailField(unique=True, error_messages={'unique': 'Este correo electrónico ya está en uso.'})
     nacionalidad = models.CharField(max_length=100)
     tipoDocumento = models.ForeignKey(TipoDocumento, null=True, on_delete=models.SET_NULL)
     numeroDocumento = models.CharField(max_length=100,unique=True)
@@ -129,6 +129,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['primerNombre', 'segundoNombre','apellidoPaterno','apellidoMaterno']
 
+   
+        
     def nombre_completos(self):
         return "{} {}, {} {}".format(self.apellidoPaterno, self.apellidoMaterno, self.primerNombre, self.segundoNombre)
 

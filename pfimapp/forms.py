@@ -1,7 +1,10 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm,UserChangeForm
+from django.contrib.auth.hashers import make_password
 from django.forms import ModelForm
 from pfimapp.models import CustomUser,TipoDocumento,EstadoCivil,Maestria,Sede
+from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 
 class CustomUserForm(ModelForm):
     email = forms.CharField(label= 'Correo Electrónico (*)',max_length=100, required=True, widget=forms.TextInput(attrs={'class': 'form-control required'}))
@@ -32,15 +35,7 @@ class CustomUserForm(ModelForm):
                   'apellidoPaterno', 'apellidoMaterno', 'estadoCivil', 'correoUNI',
                   'gradoEstudio', 'universidadProcedencia', 'telefono', 'maestria',
                   'sede', 'fechaNacimiento',]
-        
-        
-        
-        # widgets = {
-        #     'direccion': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Dirección', 'style': 'font-weight: bold;'}),
-        #     'nacionalidad': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nacionalidad', 'style': 'font-weight: bold;'}),
-        #     'telefono': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Teléfono', 'style': 'font-weight: bold;'}),
-        # }
-                
+               
 
 class CustomUserCreationForm(UserCreationForm, CustomUserForm):
     def __init__(self, *args, **kwargs):
@@ -54,3 +49,20 @@ class CustomUserCreationForm(UserCreationForm, CustomUserForm):
     class Meta(UserCreationForm.Meta):
         model = CustomUser
         fields = CustomUserForm.Meta.fields
+
+from django.contrib.auth.forms import UserChangeForm
+
+class EditarPerfilForm(UserChangeForm):
+    password = None
+
+    class Meta(UserChangeForm.Meta):
+        model = CustomUser
+        fields = ['apellidoPaterno', 'apellidoMaterno', 'primerNombre', 'segundoNombre', 'email', 'correoUNI', 'gradoEstudio', 'universidadProcedencia', 'maestria', 'sede']
+
+    def clean_password(self):
+        password = self.cleaned_data.get("password")
+        if password:
+            return make_password(password)
+        return None
+
+   

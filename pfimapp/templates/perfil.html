@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="text-center">
+                <img src="{% static 'pfimapp/img/perfil.png' %}" class="img-fluid rounded-circle mb-3"
+                    alt="{{ user.nombre_completos }}">
+            </div>
+            <h1>Información del Usuario</h1>
+            <p>Nombre: {{ user.nombre_completos }}</p>
+            <p>Correo Electrónico: {{ user.email }}</p>
+            <p>Correo Electrónico UNI: {{ user.correoUNI }}</p>
+            <p>Grado de Estudio: {{ user.gradoEstudio }}</p>
+            <p>Universidad de Procedencia: {{ user.universidadProcedencia }}</p>
+            <p>Maestria: {{ user.maestria }}</p>
+            <p>sede: {{ user.sede }}</p>
+        </div>
+        <div class="col-lg-8">
+            <h2>Editar Información del Usuario</h2>
+            <form method="post" action="{% url 'editar_perfil' %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="{{ form.tipoDocumento.auto_id }}">tipoDocumento:</label>
+                    <select class="form-select" name="tipoDocumento">
+                        <option value="">Selecciona una maestría</option>
+                        {% for tipoDocumento in tipoDocumentos %}
+                          {% if tipoDocumento.id == request.user.tipoDocumento.id %}
+                            <option value="{{ tipoDocumento.id }}" selected>{{ tipoDocumento.nombre }}</option>
+                          {% else %}
+                            <option value="{{ tipoDocumento.id }}">{{ tipoDocumento.nombre }}</option>
+                          {% endif %}
+                        {% endfor %}
+                      </select>
+                </div>
+                <div class="form-group">
+                    <label for="id_numeroDocumento">Número de Documento:</label>
+                    <input type="text" class="form-control" id="id_numeroDocumento" name="numeroDocumento"
+                        value="{{ user.numeroDocumento }}">
+                </div>
+                <div class="form-group">
+                    <label for="id_numeroUbigeoNacimiento">Número Ubigeo Nacimiento:</label>
+                    <input type="text" class="form-control" id="id_numeroUbigeoNacimiento" name="numeroUbigeoNacimiento"
+                        value="{{ user.numeroUbigeoNacimiento }}">
+                </div>
+                <div class="form-group">
+                    <label for="id_direccion">Dirección:</label>
+                    <input type="text" class="form-control" id="id_direccion" name="direccion"
+                        value="{{ user.direccion }}">
+                </div>
+                <div class="form-group">
+                    <label for="id_codigoEgresadoUNI">Código Egresado UNI:</label>
+                    <input type="text" class="form-control" id="id_codigoEgresadoUNI" name="codigoEgresadoUNI"
+                        value="{{ user.codigoEgresadoUNI }}">
+                </div>
+                <div class="form-group">
+                    <label for="id_apellidoPaterno">Apellido Paterno:</label>
+                    <input type="text" class="form-control" id="id_apellidoPaterno" name="apellidoPaterno"
+                        value="{{ user.apellidoPaterno }}">
+                </div>
+                <div class="form-group">
+                    <label for="id_apellidoMaterno">Apellido Materno:</label>
+                    <input type="text" class="form-control" id="id_apellidoMaterno" name="apellidoMaterno"
+                        value="{{ user.apellidoMaterno }}">
+                </div>
+                <div class="form-group">
+                    <label for="id_primerNombre">Primer Nombre:</label>
+                    <input type="text" class="form-control" id="id_primerNombre" name="primerNombre"
+                        value="{{ user.primerNombre }}">
+                </div>
+                <div class="form-group">
+                    <label for="id_segundoNombre">Segundo Nombre:</label>
+                    <input type="text" class="form-control" id="id_segundoNombre" name="segundoNombre"
+                        value="{{ user.segundoNombre }}">
+                </div>
+                <div class="form-group">
+                    <label for="id_email">Correo Electrónico:</label>
+                    <input type="email" class="form-control" id="id_email" name="email" value="{{ user.email }}">
+                </div>
+                <!-- <div class="form-group">
+                    <label for="{{ form.password.id_for_label }}">password:</label>
+                    <input type="text" class="form-control" id="{{ form.password.id_for_label }}" name="{{ form.password.name }}"
+                           value="{{ form.initial.password }}">
+                </div> -->
+                
+                <div class="form-group">
+                    <label for="id_correoUNI">Correo Electrónico UNI:</label>
+                    <input type="email" class="form-control" id="id_correoUNI" name="correoUNI"
+                        value="{{ user.correoUNI }}">
+                </div>
+                <div class="form-group">
+                    <label for="id_nacionalidad">Nacionalidad:</label>
+                    <input type="text" class="form-control" id="id_nacionalidad" name="nacionalidad"
+                        value="{{ user.nacionalidad }}">
+                </div>
+                <div class="form-group">
+                    <label for="id_telefono">Celular:</label>
+                    <input type="text" class="form-control" id="id_telefono" name="telefono"
+                        value="{{ user.telefono }}">
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.estadoCivil.auto_id }}">Estado Civil:</label>
+                    <select class="form-select" name="estadoCivil">
+                        <option value="">Selecciona una Estado Civil</option>
+                        {% for estadoCivil in estadoCivils %}
+                          {% if estadoCivil.id == request.user.estadoCivil.id %}
+                            <option value="{{ estadoCivil.id }}" selected>{{ estadoCivil.nombre }}</option>
+                          {% else %}
+                            <option value="{{ estadoCivil.id }}">{{ estadoCivil.nombre }}</option>
+                          {% endif %}
+                        {% endfor %}
+                      </select>
+                </div>
+                <div class="form-group">
+                    <label for="id_gradoEstudio">Grado Estudio:</label>
+                    <input type="text" class="form-control" id="id_gradoEstudio" name="gradoEstudio"
+                        value="{{ user.gradoEstudio }}">
+                </div>
+                <div class="form-group">
+                    <label for="id_universidadProcedencia">Universidad Procedencia:</label>
+                    <input type="text" class="form-control" id="id_universidadProcedencia" name="universidadProcedencia"
+                        value="{{ user.universidadProcedencia }}">
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.maestria.auto_id }}">Maestria:</label>
+                    <select class="form-select" name="maestria">
+                        <option value="">Selecciona una maestría</option>
+                        {% for maestria in maestrias %}
+                          {% if maestria.id == request.user.maestria.id %}
+                            <option value="{{ maestria.id }}" selected>{{ maestria.nombre }}</option>
+                          {% else %}
+                            <option value="{{ maestria.id }}">{{ maestria.nombre }}</option>
+                          {% endif %}
+                        {% endfor %}
+                      </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="{{ form.sede.auto_id }}">Sede:</label>
+                    <select class="form-select" name="sede">
+                        <option value="">Selecciona una sede</option>
+                        {% for sede in sedes %}
+                          {% if sede.id == request.user.sede.id %}
+                            <option value="{{ sede.id }}" selected>{{ sede.nombre }}</option>
+                          {% else %}
+                            <option value="{{ sede.id }}">{{ sede.nombre }}</option>
+                          {% endif %}
+                        {% endfor %}
+                      </select>
+                </div>
+                
+                
+                <br>
+                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
