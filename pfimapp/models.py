@@ -213,6 +213,7 @@ class Alumno(models.Model):
     maestria = models.ForeignKey(Maestria, null=True, on_delete=models.SET_NULL)
     periodoDeIngreso = models.ForeignKey(Periodo, null=True, blank=True, on_delete=models.SET_NULL)
     codigoUniPreGrado = models.CharField(max_length=10, null=True, blank=True)
+    codigoAlumPFIM = models.CharField(max_length=15, null=True, blank=True)
     estadoAcademico = models.ForeignKey(EstadoAcademico, null=True, on_delete=models.SET_NULL)
     estado = models.CharField(max_length=1, choices=ESTADO_OFERTA, default='A')
     fechaRegistro = models.DateField(default=timezone.now)

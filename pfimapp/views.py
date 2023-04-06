@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import  AuthenticationForm
-from pfimapp.models import ReporteEconomico,ReporteEcoConceptoPago,CustomUser,Matricula,DetalleMatricula,Periodo,Sede,Maestria,TipoDocumento,EstadoCivil
+from pfimapp.models import ReporteEconomico,ReporteEcoConceptoPago,CustomUser,Matricula,DetalleMatricula,Alumno,Sede,Maestria,TipoDocumento,EstadoCivil
 from django.contrib.auth import login, logout, authenticate
 from .forms import EditarPerfilForm
 from django.contrib.auth.forms import PasswordChangeForm
@@ -9,7 +9,6 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 
-# Create your views here.
 from pfimapp.forms import CustomUserCreationForm
   
 
@@ -42,21 +41,22 @@ def edit_user(request):
 
 @login_required
 def reporteEconomico(request):
+    alumno_login = Alumno.objects.get(usuario=request.user, estado="A")
+
     reporteEcon = ReporteEconomico.objects.filter(alumno__usuario=request.user, estado="A")
     detalleRepoEco = ReporteEcoConceptoPago.objects.filter(reporteEconomico=reporteEcon.first(), estado="A")
-    return render(request, 'reporteEconomico.html',{'reporteEconomicos':detalleRepoEco})
+
+    return render(request, 'reporteEconomico.html',{'reporteEconomicos':detalleRepoEco,'alumno_login':alumno_login})
 
 @login_required
 def reporteAcademico(request):
+    alumno_login = Alumno.objects.get(usuario=request.user, estado="A")
+
     reporteEcon = ReporteEconomico.objects.filter(alumno__usuario=request.user, estado="A")
     if reporteEcon.exists():
         detalleRepoEco = ReporteEcoConceptoPago.objects.filter(reporteEconomico=reporteEcon.first(), estado="A")
     else:
         detalleRepoEco = []
-
-
-    # reporteEcon = ReporteEconomico.objects.filter(alumno__usuario=request.user, estado="A")
-    # detalleRepoEco = ReporteEcoConceptoPago.objects.filter(reporteEconomico=reporteEcon.first(), estado="A")
 
     detalleAcademico = DetalleMatricula.objects.filter(matricula__alumno__usuario=request.user, estado="A")
     
@@ -71,7 +71,7 @@ def reporteAcademico(request):
             hay_estadoBoletaPag_pendiente = True
             break
    
-    return render(request, 'reporteAcademico.html', {'reporteAcademicos': detalleAcademico, 'reporteEconomicos': detalleRepoEco, 'hay_registro_nulo': hay_registro_nulo, 'hay_estadoBoletaPag_pendiente':hay_estadoBoletaPag_pendiente})
+    return render(request, 'reporteAcademico.html', {'reporteAcademicos': detalleAcademico, 'alumno_login':alumno_login,'reporteEconomicos': detalleRepoEco, 'hay_registro_nulo': hay_registro_nulo, 'hay_estadoBoletaPag_pendiente':hay_estadoBoletaPag_pendiente})
 
 @login_required
 def perfil(request):
@@ -84,7 +84,7 @@ def perfil(request):
         'sedes': sedes,
         'tipoDocumentos' : tipoDocumentos,
         'estadoCivils': estadoCivils,
-        'form': EditarPerfilForm(instance=request.user, initial={'password': request.user.password}),
+        'form': EditarPerfilForm(instance=request.user)
     }
     return render(request, 'perfil.html', context)
 
@@ -111,13 +111,14 @@ def reporteMatricula(request):
 @login_required
 def detalleMatricula(request, matricula_id):
     detalleAcademico = DetalleMatricula.objects.filter(matricula=matricula_id)
+    alumno_login = Alumno.objects.get(usuario=request.user, estado="A")
     
     if detalleAcademico.exists():
         periodo = detalleAcademico.first().seccion.periodo
     else:
         periodo = None
 
-    return render(request, 'detalleMatricula.html', {'detalleAcademico': detalleAcademico, 'periodo': periodo})
+    return render(request, 'detalleMatricula.html', {'detalleAcademico': detalleAcademico, 'periodo': periodo, 'alumno_login':alumno_login})
 
 @login_required
 def signout(request):

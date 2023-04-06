@@ -14,17 +14,17 @@
             <p>Correo Electrónico UNI: {{ user.correoUNI }}</p>
             <p>Grado de Estudio: {{ user.gradoEstudio }}</p>
             <p>Universidad de Procedencia: {{ user.universidadProcedencia }}</p>
-            <p>Maestria: {{ user.maestria }}</p>
+            <p>Maestría: {{ user.maestria }}</p>
             <p>sede: {{ user.sede }}</p>
         </div>
-        <div class="col-lg-8">
+        {% comment %} <div class="col-lg-8 mb-5 mt-4">
             <h2>Editar Información del Usuario</h2>
             <form method="post" action="{% url 'editar_perfil' %}">
                 {% csrf_token %}
                 <div class="form-group">
-                    <label for="{{ form.tipoDocumento.auto_id }}">tipoDocumento:</label>
+                    <label for="{{ form.tipoDocumento.auto_id }}">Tipo de Documento:</label>
                     <select class="form-select" name="tipoDocumento">
-                        <option value="">Selecciona una maestría</option>
+                        <option value="">Selecciona una Maestría</option>
                         {% for tipoDocumento in tipoDocumentos %}
                           {% if tipoDocumento.id == request.user.tipoDocumento.id %}
                             <option value="{{ tipoDocumento.id }}" selected>{{ tipoDocumento.nombre }}</option>
@@ -77,13 +77,7 @@
                 <div class="form-group">
                     <label for="id_email">Correo Electrónico:</label>
                     <input type="email" class="form-control" id="id_email" name="email" value="{{ user.email }}">
-                </div>
-                <!-- <div class="form-group">
-                    <label for="{{ form.password.id_for_label }}">password:</label>
-                    <input type="text" class="form-control" id="{{ form.password.id_for_label }}" name="{{ form.password.name }}"
-                           value="{{ form.initial.password }}">
-                </div> -->
-                
+                </div>                                
                 <div class="form-group">
                     <label for="id_correoUNI">Correo Electrónico UNI:</label>
                     <input type="email" class="form-control" id="id_correoUNI" name="correoUNI"
@@ -113,17 +107,17 @@
                       </select>
                 </div>
                 <div class="form-group">
-                    <label for="id_gradoEstudio">Grado Estudio:</label>
+                    <label for="id_gradoEstudio">Grado de Estudio:</label>
                     <input type="text" class="form-control" id="id_gradoEstudio" name="gradoEstudio"
                         value="{{ user.gradoEstudio }}">
                 </div>
                 <div class="form-group">
-                    <label for="id_universidadProcedencia">Universidad Procedencia:</label>
+                    <label for="id_universidadProcedencia">Universidad de Procedencia:</label>
                     <input type="text" class="form-control" id="id_universidadProcedencia" name="universidadProcedencia"
                         value="{{ user.universidadProcedencia }}">
                 </div>
                 <div class="form-group">
-                    <label for="{{ form.maestria.auto_id }}">Maestria:</label>
+                    <label for="{{ form.maestria.auto_id }}">Maestría:</label>
                     <select class="form-select" name="maestria">
                         <option value="">Selecciona una maestría</option>
                         {% for maestria in maestrias %}
@@ -154,7 +148,7 @@
                 <br>
                 <button type="submit" class="btn btn-primary">Guardar Cambios</button>
             </form>
-        </div>
+        </div> {% endcomment %}
     </div>
 </div>
 {% endblock %}

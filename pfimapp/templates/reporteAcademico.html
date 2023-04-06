@@ -16,6 +16,11 @@
           {{user.segundoNombre|upper }}
         </div>
         <div><span>ESPECIALIDAD :</span> {{ user.maestria.nombre }}</div>
+        {% if alumno_login.codigoAlumPFIM %}
+          <div><span>CÓDIGO ALUMNO :</span> {{ alumno_login.codigoAlumPFIM }}</div>
+        {% else%}
+          <div><span>CÓDIGO ALUMNO :</span> aun no tiene código ...</div>
+        {% endif%}
       </div>
     </header>
     <div>

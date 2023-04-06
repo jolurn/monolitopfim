@@ -86,7 +86,7 @@ WSGI_APPLICATION = 'monolito.wsgi.application'
 #         'ENGINE': 'django.db.backends.mysql',
 #         'NAME': 'db_fimapp',
 #         'USER': 'root',
-#         'PASSWORD': '123456PFIMU',
+#         'PASSWORD': '123456',
 #         'HOST': 'localhost',
 #         'PORT': '3306'
 #     }
