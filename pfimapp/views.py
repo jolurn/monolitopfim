@@ -1,16 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import  AuthenticationForm
 from pfimapp.models import ReporteEconomico,ReporteEcoConceptoPago,CustomUser,Matricula,DetalleMatricula,Alumno,Sede,Maestria,TipoDocumento,EstadoCivil
-from django.contrib.auth import login, logout, authenticate
-from .forms import EditarPerfilForm
+from django.contrib.auth import login, logout, authenticate,update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
-from django.contrib.auth import update_session_auth_hash
-from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.hashers import make_password
-
 from pfimapp.forms import CustomUserCreationForm
-  
+
 
 def home(request):
     return render(request,'home.html')
@@ -25,20 +20,7 @@ def signup(request):
     else:
         form = CustomUserCreationForm()
     return render(request, 'signup.html', {'form': form})
-
-@login_required
-def edit_user(request):
-    user = get_object_or_404(CustomUser, id=request.user.id)
-    if request.method == 'POST':
-        form = PasswordChangeForm(user, request.POST)
-        if form.is_valid():
-            form.save()
-            update_session_auth_hash(request, form.user)
-            return redirect('home')
-    else:
-        form = PasswordChangeForm(user)
-    return render(request, 'editUser.html', {'form': form})
-
+  
 @login_required
 def reporteEconomico(request):
     alumno_login = Alumno.objects.get(usuario=request.user, estado="A")
@@ -72,35 +54,6 @@ def reporteAcademico(request):
             break
    
     return render(request, 'reporteAcademico.html', {'reporteAcademicos': detalleAcademico, 'alumno_login':alumno_login,'reporteEconomicos': detalleRepoEco, 'hay_registro_nulo': hay_registro_nulo, 'hay_estadoBoletaPag_pendiente':hay_estadoBoletaPag_pendiente})
-
-@login_required
-def perfil(request):
-    maestrias = Maestria.objects.all()
-    sedes = Sede.objects.all()
-    tipoDocumentos = TipoDocumento.objects.all()
-    estadoCivils = EstadoCivil.objects.all()
-    context = {
-        'maestrias': maestrias,
-        'sedes': sedes,
-        'tipoDocumentos' : tipoDocumentos,
-        'estadoCivils': estadoCivils,
-        'form': EditarPerfilForm(instance=request.user)
-    }
-    return render(request, 'perfil.html', context)
-
-
-@login_required
-def editar_perfil(request):
-    
-    if request.method == 'POST':
-        form = EditarPerfilForm(request.POST, instance=request.user)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Tu perfil ha sido actualizado con éxito!')
-            return redirect('perfil')
-    else:
-        form = EditarPerfilForm(instance=request.user)
-    return render(request, 'perfil.html', {'form': form})    
 
 @login_required
 def reporteMatricula(request):  
@@ -137,4 +90,6 @@ def signin(request):
         else:
             login(request, user)
             return redirect('reporteEconomico')
+
+
 

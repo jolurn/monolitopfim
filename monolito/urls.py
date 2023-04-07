@@ -21,10 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
     path('signup/', views.signup, name='signup'),  
-    path('perfil/', views.perfil, name='perfil'),
-    path('editar_perfil/', views.editar_perfil, name='editar_perfil'),
-
-    path('editUser/', views.edit_user, name='edit_user'),
+    
     path('matricula/<int:matricula_id>/', views.detalleMatricula, name='detalle_matricula'),
     path('reporteMatricula/', views.reporteMatricula, name='reporteMatricula'),  
     path('reporteAcademico/', views.reporteAcademico, name='reporteAcademico'),  

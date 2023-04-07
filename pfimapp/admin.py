@@ -5,7 +5,7 @@ from pfimapp.models import DetalleMatricula,Matricula,Seccion,Docente,Curso,Cust
 class SeccionAdmin(admin.ModelAdmin):
     # Para que sea mas facil de encontrar a la hora de crear una matricula
     search_fields = ['periodo__codigo', 'maestria__codigo', 'curso__codigo']
-    # autocomplete_fields = ['curso', 'periodo', 'docente', 'maestria']
+    autocomplete_fields = ['curso', 'periodo', 'docente', 'maestria']
     # --- poner en solo lectura los input ---
     exclude = ('fechaRegistro', 'fechaModificado','usuarioPosgradoFIM', 'ipUsuario')
     readonly_fields = ('fechaRegistro', 'fechaModificado','usuarioPosgradoFIM', 'ipUsuario')
@@ -24,7 +24,7 @@ admin.site.register(Seccion, SeccionAdmin)
 
 class DocenteAdmin(admin.ModelAdmin):
     search_fields = ['usuario__apellidoPaterno']
-    # autocomplete_fields = ['persona']
+    autocomplete_fields = ['usuario','maestria']
     # --- poner en solo lectura los input ---
     exclude = ('fechaRegistro', 'fechaModificado','usuarioPosgradoFIM', 'ipUsuario')
     readonly_fields = ('fechaRegistro', 'fechaModificado','usuarioPosgradoFIM', 'ipUsuario')
@@ -175,7 +175,7 @@ admin.site.register(EstadoAcademico, EstadoAcademicoAdmin)
 class MaestriaAdmin(admin.ModelAdmin):
     search_fields = ['codigo']
     ordering = ['codigo']
-    # ordering = ['-id']
+   
     # --- poner en solo lectura los input ---
     exclude = ('fechaRegistro', 'fechaModificado','usuarioPosgradoFIM', 'ipUsuario')
     readonly_fields = ('fechaRegistro', 'usuarioPosgradoFIM', 'ipUsuario')
@@ -193,7 +193,7 @@ admin.site.register(Maestria, MaestriaAdmin)
 
 class AlumnoAdmin(admin.ModelAdmin):
     search_fields = ['usuario__apellidoPaterno', 'usuario__numeroDocumento']
-    # autocomplete_fields = ['usuario', 'periodoDeIngreso']
+    autocomplete_fields = ['usuario', 'periodoDeIngreso','maestria']
     # --- poner en solo lectura los input ---
     exclude = ('fechaRegistro', 'fechaModificado','usuarioPosgradoFIM', 'ipUsuario')
     readonly_fields = ('fechaRegistro', 'fechaModificado','usuarioPosgradoFIM', 'ipUsuario')
@@ -232,7 +232,7 @@ class ReporteEcoConceptoPagoAdmin(admin.TabularInline):
     model = ReporteEcoConceptoPago
     extra = 0
   
-    # autocomplete_fields = ['conceptoPago', 'periodo']
+    autocomplete_fields = ['conceptoPago', 'periodo']
     # --- poner en solo lectura los input ---
     exclude = ('fechaRegistro', 'fechaModificado','usuarioPosgradoFIM', 'ipUsuario')
     readonly_fields = ('fechaRegistro', 'fechaModificado','usuarioPosgradoFIM', 'ipUsuario')
@@ -248,7 +248,7 @@ class ReporteEcoConceptoPagoAdmin(admin.TabularInline):
 class ReporteEconomicoAdmin(admin.ModelAdmin):
     search_fields = ['alumno__usuario__apellidoPaterno',
                      'alumno__usuario__numeroDocumento']
-    # autocomplete_fields = ['alumno']
+    autocomplete_fields = ['alumno']
     inlines = [ReporteEcoConceptoPagoAdmin, ]
     # --- poner en solo lectura los input ---
     exclude = ('fechaRegistro', 'fechaModificado','usuarioPosgradoFIM', 'ipUsuario')
@@ -269,7 +269,7 @@ admin.site.register(ReporteEconomico, ReporteEconomicoAdmin)
 class DetalleMatriculaAdmin(admin.TabularInline):
     model = DetalleMatricula
     extra = 1
-    # autocomplete_fields = ['seccion']
+    autocomplete_fields = ['seccion']
     # --- poner en solo lectura los input ---
     exclude = ('fechaRegistro', 'fechaModificado', 'usuarioPosgradoFIM', 'ipUsuario')
     readonly_fields = ('fechaRegistro', 'fechaModificado','usuarioPosgradoFIM', 'ipUsuario')
@@ -285,7 +285,7 @@ class DetalleMatriculaAdmin(admin.TabularInline):
 class MatriculaAdmin(admin.ModelAdmin):
     search_fields = ['alumno__usuario__apellidoPaterno',
                      'alumno__usuario__numeroDocumento', 'periodo__codigo']
-    # autocomplete_fields = ['alumno', 'periodo']
+    autocomplete_fields = ['alumno', 'periodo']
     inlines = [DetalleMatriculaAdmin, ]
     # --- poner en solo lectura los input ---
     exclude = ('fechaRegistro', 'fechaModificado','usuarioPosgradoFIM', 'ipUsuario')
