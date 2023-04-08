@@ -5,7 +5,6 @@ from django.contrib.auth.hashers import make_password
 import socket
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 s.connect(("8.8.8.8", 80))
-# Create your models here.
 
 Es1 = 'A'
 Es2 = 'I'
@@ -77,25 +76,43 @@ class TipoDocumento(models.Model):
 
 class UsuarioManager(BaseUserManager):
 
-    def create_user(self, email, password=None, **extra_fields):
+    def create_user(self, email, primerNombre, apellidoPaterno, segundoNombre, apellidoMaterno, password=None):
         if not email:
-            raise ValueError('El Email es obligatorio')
-        email = self.normalize_email(email)
-        user = self.model(email=email, **extra_fields)
+            raise ValueError('El usuario debe tener un correo electrónico')
+        if not primerNombre:
+            raise ValueError('El usuario debe tener un primer nombre')
+        if not segundoNombre:
+            raise ValueError('El usuario debe tener un segundo nombre')        
+        if not apellidoPaterno:
+            raise ValueError('El usuario debe tener un apellido paterno')
+        if not apellidoMaterno:
+            raise ValueError('El usuario debe tener un apellido materno')
+
+        user = self.model(
+            email=self.normalize_email(email),
+            primerNombre=primerNombre,
+            segundoNombre=segundoNombre,
+            apellidoPaterno=apellidoPaterno,
+            apellidoMaterno=apellidoMaterno
+        )
+
         user.set_password(password)
-        user.save()
+        user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, password=None, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-
-        if not extra_fields.get('is_staff'):
-            raise ValueError('Los superusuarios deben tener is_staff=True')
-        if not extra_fields.get('is_superuser'):
-            raise ValueError('Los superusuarios deben tener is_superuser=True')
-
-        return self.create_user(email, password, **extra_fields)
+    def create_superuser(self, email, primerNombre, segundoNombre,apellidoPaterno,apellidoMaterno, password):
+        user = self.create_user(
+            email=self.normalize_email(email),
+            primerNombre=primerNombre,
+            segundoNombre=segundoNombre,
+            apellidoPaterno=apellidoPaterno,
+            apellidoMaterno=apellidoMaterno,
+            password=password,
+        )
+        user.is_staff = True
+        user.is_superuser = True
+        user.save(using=self._db)
+        return user
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
@@ -123,7 +140,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(default=True)
     fechaRegistro = models.DateField(default=timezone.now)
     fechaModificado = models.DateField(null=True, blank=True, auto_now=True)    
-
+  
     objects = UsuarioManager()
 
     USERNAME_FIELD = 'email'
@@ -136,12 +153,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.nombre_completos()
-    
-    def save(self, *args, **kwargs):
-        if self.password:
-            self.password = make_password(self.password)
-        super().save(*args, **kwargs)
-
+  
     class Meta:
         verbose_name_plural = "Usuarios"
 

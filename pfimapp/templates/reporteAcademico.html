@@ -15,7 +15,7 @@
           <span>NOMBRES :</span> {{ user.primerNombre|upper }}
           {{user.segundoNombre|upper }}
         </div>
-        <div><span>ESPECIALIDAD :</span> {{ user.maestria.nombre }}</div>
+        <div><span>ESPECIALIDAD :</span> {{ alumno_login.maestria.nombre }}</div>
         {% if alumno_login.codigoAlumPFIM %}
           <div><span>CÓDIGO ALUMNO :</span> {{ alumno_login.codigoAlumPFIM }}</div>
         {% else%}

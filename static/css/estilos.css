@@ -54,8 +54,10 @@ h2 {
   font-weight: normal;
   text-align: center;
   margin: 0 0 20px 0;
-  background: url("../pfimapp/img/dimension.png");
+  background: url("../pfimapp/img/tornillos.jpg");
+  background-size: contain;
 }
+
 
 #project {
   float: left;
@@ -147,3 +149,4 @@ footer {
 .firmas {
   margin: 100px 0;
 }
+/* ----login--- */
