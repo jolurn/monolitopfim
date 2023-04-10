@@ -36,10 +36,10 @@ class CustomUserUpdateView(UpdateView):
 @login_required
 def reporteEconomico(request):
     try:
-        alumno_login = Alumno.objects.get(usuario=request.user, estado="A")
+        alumno_login = Alumno.objects.get(usuario=request.user, estado="A")                
     except Alumno.DoesNotExist:
         alumno_login = None
-
+    
     reporteEcon = ReporteEconomico.objects.filter(alumno__usuario=request.user, estado="A")
     if reporteEcon:
         detalleRepoEco = ReporteEcoConceptoPago.objects.filter(reporteEconomico=reporteEcon.first(), estado="A")
