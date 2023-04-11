@@ -117,8 +117,8 @@ class UsuarioManager(BaseUserManager):
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
 
-    email = models.EmailField(unique=True, error_messages={'unique': 'Este correo electrónico ya está en uso.'})
-    nacionalidad = models.CharField(max_length=100)
+    email = models.EmailField(max_length=100,unique=True, error_messages={'unique': 'Este correo electrónico ya está en uso.'})
+    nacionalidad = models.CharField(max_length=100, unique=True, error_messages={'unique': 'Este DNI ya está en uso.'})
     tipoDocumento = models.ForeignKey(TipoDocumento, null=True, on_delete=models.SET_NULL)
     numeroDocumento = models.CharField(max_length=100,unique=True)
     numeroUbigeoNacimiento = models.CharField(max_length=100)

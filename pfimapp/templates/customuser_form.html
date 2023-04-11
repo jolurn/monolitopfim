@@ -20,7 +20,7 @@
         </div>
         <div class="col-lg-8 mb-5 mt-4">
             <h2>Editar Información del Usuario</h2>
-            <form method="post">
+            <form method="POST">
                 {% csrf_token %}
                 {{ form.as_p }}
                 <button type="submit" class="btn btn-primary">Guardar</button>
