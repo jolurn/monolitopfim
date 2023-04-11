@@ -61,8 +61,8 @@ admin.site.register(Curso, CursoAdmin)
 class UserAdmin(admin.ModelAdmin):
     search_fields = ['apellidoPaterno', 'email', 'numeroDocumento']
     ordering = ['-id']
-    list_display = ('tipoDocumento', 'numeroDocumento', 'primerNombre', 'segundoNombre',
-                    'apellidoPaterno', 'apellidoMaterno', 'email')
+    list_display = ('tipoDocumento', 'numeroDocumento', 'numeroUbigeoNacimiento','primerNombre', 'segundoNombre',
+                    'apellidoPaterno', 'apellidoMaterno', 'email','correoUNI','telefono','sede')
     
     def save_model(self, request, obj, form, change):
         # encripta el password antes de guardarlo

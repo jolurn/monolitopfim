@@ -37,7 +37,7 @@ class CustomUserCreationForm(UserCreationForm):
 
     class Meta:
         model = CustomUser
-        fields = ('nacionalidad', 'tipoDocumento', 'numeroDocumento', 'numeroUbigeoNacimiento', 'direccion', 'codigoEgresadoUNI', 'primerNombre', 'segundoNombre', 'apellidoPaterno', 'apellidoMaterno', 'estadoCivil', 'fechaNacimiento','email', 'correoUNI','gradoEstudio', 'universidadProcedencia', 'telefono', 'maestria','sede')
+        fields = ('email','nacionalidad', 'tipoDocumento', 'numeroDocumento', 'numeroUbigeoNacimiento', 'direccion', 'codigoEgresadoUNI', 'primerNombre', 'segundoNombre', 'apellidoPaterno', 'apellidoMaterno', 'estadoCivil', 'fechaNacimiento', 'correoUNI','gradoEstudio', 'universidadProcedencia', 'telefono', 'maestria','sede')
 
 
 class CustomUserForm(forms.ModelForm):
@@ -63,4 +63,4 @@ class CustomUserForm(forms.ModelForm):
 
     class Meta:
         model = CustomUser
-        fields = ('nacionalidad', 'tipoDocumento', 'numeroDocumento', 'numeroUbigeoNacimiento', 'direccion', 'codigoEgresadoUNI', 'primerNombre', 'segundoNombre', 'apellidoPaterno', 'apellidoMaterno', 'estadoCivil', 'fechaNacimiento','email', 'correoUNI','gradoEstudio', 'universidadProcedencia', 'telefono', 'maestria','sede')
+        fields = ('email','nacionalidad', 'tipoDocumento', 'numeroDocumento', 'numeroUbigeoNacimiento', 'direccion', 'codigoEgresadoUNI', 'primerNombre', 'segundoNombre', 'apellidoPaterno', 'apellidoMaterno', 'estadoCivil', 'fechaNacimiento', 'correoUNI','gradoEstudio', 'universidadProcedencia', 'telefono', 'maestria','sede')
