@@ -32,7 +32,7 @@ class CustomUserCreationForm(UserCreationForm):
     universidadProcedencia = forms.CharField(label='Universidad de Procedencia (*)',max_length=200, required=True, widget=forms.TextInput(attrs={'class': 'form-control required'}))
     telefono = forms.CharField(label='Celular (*)',max_length=15, required=True, widget=forms.TextInput(attrs={'class': 'form-control required'}))
     maestria = forms.ModelChoiceField(label='Maestria que va llevar (*)',queryset=Maestria.objects.all(), required=True, widget=forms.Select(attrs={'class': 'form-control required'}))
-    sede = forms.ModelChoiceField(label='Sede donde va a estudiar (*)',queryset=Sede.objects.all(), required=True, widget=forms.Select(attrs={'class': 'form-control required'}))
+    sede = forms.ModelChoiceField(label='Sede donde va a estudiar (*)',queryset=Sede.objects.all(), required=True, widget=forms.Select(attrs={'class': 'form-control required mb-3'}))
     fechaNacimiento = forms.DateField(label='Fecha de Nacimiento (*)',required=False, widget=forms.TextInput(attrs={'type': 'date', 'class': 'form-control'}))
 
     class Meta:
@@ -58,7 +58,7 @@ class CustomUserForm(forms.ModelForm):
     universidadProcedencia = forms.CharField(label='Universidad de Procedencia (*)',max_length=200, required=True, widget=forms.TextInput(attrs={'class': 'form-control required'}))
     telefono = forms.CharField(label='Celular (*)',max_length=15, required=True, widget=forms.TextInput(attrs={'class': 'form-control required'}))
     maestria = forms.ModelChoiceField(label='Maestria que va llevar (*)',queryset=Maestria.objects.all(), required=True, widget=forms.Select(attrs={'class': 'form-control required'}))
-    sede = forms.ModelChoiceField(label='Sede donde va a estudiar (*)',queryset=Sede.objects.all(), required=True, widget=forms.Select(attrs={'class': 'form-control required'}))
+    sede = forms.ModelChoiceField(label='Sede donde va a estudiar (*)',queryset=Sede.objects.all(), required=True, widget=forms.Select(attrs={'class': 'form-control required mb-3'}))
     fechaNacimiento = forms.DateField(label='Fecha de Nacimiento (*)',required=False, widget=forms.TextInput(attrs={'type': 'date', 'class': 'form-control'}))
 
     class Meta:
