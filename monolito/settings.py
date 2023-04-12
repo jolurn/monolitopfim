@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+import pymysql
 from pathlib import Path
 import os
 # import dj_database_url
@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
-
+pymysql.install_as_MySQLdb()
 # Application definition
 
 INSTALLED_APPS = [
@@ -80,13 +80,22 @@ WSGI_APPLICATION = 'monolito.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-
 DATABASES = {
-    'default': dj_database_url.config(
-    default='postgresql://postgres:postgres@localhost/postgres',
-    conn_max_age=600
-    )    
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'db_posgradofimapp',
+        'USER': 'root',
+        'PASSWORD': '123456PFIMU',
+        'HOST': 'localhost',
+        'PORT': '3306'
+    }
 }
+# DATABASES = {
+#     'default': dj_database_url.config(
+#     default='postgresql://postgres:postgres@localhost/postgres',
+#     conn_max_age=600
+#     )    
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
