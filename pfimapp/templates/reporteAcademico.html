@@ -34,10 +34,7 @@
             <th><b>CÓDIGO</b></th>
             <th><b>CURSO</b></th>
             <th><b>CREDITO</b></th>
-            <th><b>DOCENTE</b></th>
-            <th><b>P TRABAJOS</b></th>
-            <th><b>EXAMEN P</b></th>
-            <th><b>EXAMEN F</b></th>
+            <th><b>DOCENTE</b></th>            
             <th><b>PROMEDIO F</b></th>
             <th><b>ESTADO</b></th>
           </tr>
@@ -50,25 +47,7 @@
             <td>{{ detalle.seccion.curso.nombre }}</td>
             <td>{{ detalle.seccion.curso.credito }}</td>
             <td>{{ detalle.seccion.docente.usuario.nombre_completos }}</td>
-            {% if detalle.promedioTrabajos >= 12 %}
-            <td class="letraAzul"><b>{{ detalle.promedioTrabajos }}</b></td>
-            {% else %}
-            <td class="letraRoja">
-              <b>{{ detalle.promedioTrabajos }}</b>
-            </td>
-            {% endif %} {% if detalle.examenParcial >= 12 %}
-            <td class="letraAzul"><b>{{ detalle.examenParcial }}</b></td>
-            {% else %}
-            <td class="letraRoja">
-              <b>{{ detalle.examenParcial }}</b>
-            </td>
-            {% endif %} {% if detalle.examenFinal >= 12 %}
-            <td class="letraAzul"><b>{{ detalle.examenFinal }}</b></td>
-            {% else %}
-            <td class="letraRoja">
-              <b>{{ detalle.examenFinal }}</b>
-            </td>
-            {% endif %} {% if detalle.promedioFinal >= 12 %}
+            {% if detalle.promedioFinal >= 12 %}
             <td class="letraAzul"><b>{{ detalle.promedioFinal }}</b></td>
             {% else %}
             <td class="letraRoja">
