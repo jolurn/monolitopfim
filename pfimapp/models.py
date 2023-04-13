@@ -353,7 +353,7 @@ class Matricula(models.Model):
 class DetalleMatricula(models.Model):
 
     matricula = models.ForeignKey(Matricula, null=True, on_delete=models.SET_NULL)
-    seccion = models.ForeignKey(Seccion, null=True, on_delete=models.SET_NULL)   
+    seccion = models.ForeignKey(Seccion, null=True, on_delete=models.SET_NULL)
     promedioFinal = models.FloatField(null=True, blank=True)
     retirado = models.BooleanField(default=False)
     estado = models.CharField(max_length=1, choices=ESTADO_OFERTA, default='A')
