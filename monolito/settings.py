@@ -105,7 +105,7 @@ WSGI_APPLICATION = 'monolito.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-    default='postgresql://postgres:postgres@localhost/postgres',
+    default='postgresql://postgres:123456PFIMU@localhost/prueba',
     conn_max_age=600
     )    
 }
