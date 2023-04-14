@@ -354,15 +354,16 @@ class DetalleMatricula(models.Model):
 
     matricula = models.ForeignKey(Matricula, null=True, on_delete=models.SET_NULL)
     seccion = models.ForeignKey(Seccion, null=True, on_delete=models.SET_NULL)
+    promedioTrabajos = models.FloatField(null=True, blank=True)
+    examenParcial = models.FloatField(null=True, blank=True)
+    examenFinal = models.FloatField(null=True, blank=True)
     promedioFinal = models.FloatField(null=True, blank=True)
     retirado = models.BooleanField(default=False)
     estado = models.CharField(max_length=1, choices=ESTADO_OFERTA, default='A')
     fechaRegistro = models.DateField(default=timezone.now)
     fechaModificado = models.DateField(null=True, blank=True, auto_now=True)    
-    ipUsuario = models.CharField(null=True, default=s.getsockname()[
-                                 0], blank=True, max_length=100)
-    usuarioPosgradoFIM = models.CharField(
-        null=True, blank=True, max_length=200)
+    ipUsuario = models.CharField(null=True, default=s.getsockname()[0], blank=True, max_length=100)
+    usuarioPosgradoFIM = models.CharField(null=True, blank=True, max_length=200)
 
     def __str__(self):
         return "{}  {}, {} {}".format(self.matricula.alumno.usuario.apellidoPaterno, self.matricula.alumno.usuario.apellidoMaterno, self.seccion.curso, self.seccion.periodo)

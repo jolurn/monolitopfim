@@ -92,6 +92,17 @@ WSGI_APPLICATION = 'monolito.wsgi.application'
 #     }
 # }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'test_back1',
+#         'USER': 'postgres',
+#         'PASSWORD': '123456PFIMU',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
+
 DATABASES = {
     'default': dj_database_url.config(
     default='postgresql://postgres:postgres@localhost/postgres',
