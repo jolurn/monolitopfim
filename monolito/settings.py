@@ -95,7 +95,7 @@ WSGI_APPLICATION = 'monolito.wsgi.application'
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'test_back1',
+#         'NAME': 'prueba',
 #         'USER': 'postgres',
 #         'PASSWORD': '123456PFIMU',
 #         'HOST': 'localhost',
