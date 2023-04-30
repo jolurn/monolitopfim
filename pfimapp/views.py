@@ -141,29 +141,11 @@ def generar_pdf(request):
     image_path = os.path.join(settings.STATICFILES_DIRS[0], 'pfimapp/img/logo.png')
     logo = Image.open(image_path)
 
-    reporteAcademicos = (
-        DetalleMatricula.objects
-        .select_related('matricula__alumno__usuario', 'seccion__periodo', 'seccion__docente__usuario')
-        .filter(matricula__alumno__usuario=request.user, estado="A")
-        .order_by('seccion__periodo__codigo')
-    )
-
-    # Calcular la suma de créditos y el promedio de los promedios
-    suma_creditos = 0
-    promedio_general = 0
-    count_promedios = 0
-
-    for detalle in reporteAcademicos:
-        suma_creditos += detalle.seccion.curso.credito
-        if detalle.promedioFinal >= 12:
-            promedio_general += detalle.promedioFinal
-            count_promedios += 1
-
-    promedio_general = promedio_general / count_promedios if count_promedios > 0 else 0
-
+    reporteAcademicos = DetalleMatricula.objects.filter(matricula__alumno__usuario=request.user, estado="A").order_by('seccion__periodo__codigo')
+           
     #Create the HttpResponse headers with PDF
     response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename=Platzi-student-report.pdf'
+    response['Content-Disposition'] = 'attachment; filename=PosgradoFIM-student-report.pdf'
     # Create the PDF object, using the bytesIO object as its "file."
     buffer = BytesIO()
     c = canvas.Canvas(buffer, pagesize=A4)
@@ -181,76 +163,65 @@ def generar_pdf(request):
     c.setFont('Helvetica',12)
     user_name = request.user.nombre_completos()
     c.drawString(30, 705, f'ALUMNO: {user_name}')    
-    
-    c.setFont('Helvetica', 12)
-    c.drawString(30, 30, f'Creditos de cursos aprobados {suma_creditos}')
-
+     
     # Use today() method to get current date
     current_date = datetime.today().strftime('%d/%m/%Y')
     c.drawString(480, 705, current_date)
-    # start X
-    c.setFont('Helvetica-Bold', 18)
-    c.drawString(30, 650, 'Reporte Académico')
+    # start X, height end y, height
+    c.line(460,702,560,702)
+  
+    #table header
+    styles = getSampleStyleSheet()
+    styleBH = styles["Normal"]
+    styleBH.alignment = TA_CENTER
+    styleBH.fontSize = 10
+        
+    # Table data
+    # encabezado de la tabla
+    header = [    'Periodo','Código','Curso','Crédito','Docente', 'Promedio','Retirado']
 
-    # Add a subtitle with the name of the student
-    c.setFont('Helvetica', 16)
-    c.drawString(30, 610, f'Nombre del alumno: {user_name}')
-
-    # Add a subtitle with the current date
-    c.setFont('Helvetica', 16)
-    c.drawString(30, 570, f'Fecha del reporte: {current_date}')
-
-    # Add a table with the academic record
-    data = [['Curso', 'Sección', 'Período', 'Docente', 'Promedio Final', 'Créditos']]
+    # datos de la tabla
+    data = [    header,]
+    high = 650
     for detalle in reporteAcademicos:
-        data.append([
-            detalle.seccion.curso.nombre,
-            detalle.seccion.nombre,
-            detalle.seccion.periodo.codigo,
-            detalle.seccion.docente.usuario.nombre_completo(),
-            f"{detalle.promedioFinal:.1f}" if detalle.promedioFinal is not None else "",
-            str(detalle.seccion.curso.credito)
-        ])
-    table = Table(data)
+        student = [
+            str(detalle.seccion.periodo.codigo),
+            str(detalle.seccion.curso.codigo),
+            str(detalle.seccion.curso.nombre),
+            str(detalle.seccion.curso.credito),
+            str(detalle.seccion.docente.usuario.nombre_completos()),            
+            str(detalle.promedioFinal),
+            str(detalle.retirado),
+        ]
+        data.append(student)
+        high = high - 18
+    #table size
+    width, height = A4
+    table = Table(data, colWidths=[1.4 * cm,0.9 * cm, 8.5 * cm,0.9 * cm, 4.5 * cm, 1.4 *cm, 1.4*cm])
     table.setStyle(TableStyle([
-        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
-        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-        ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
-        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-        ('FONTSIZE', (0, 0), (-1, 0), 12),
-        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-        ('BACKGROUND', (0, 1), (-1, -1), colors.beige),
-        ('TEXTCOLOR', (0, 1), (-1, -1), colors.black),
-        ('ALIGN', (0, 1), (-1, -1), 'CENTER'),
-        ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
-        ('FONTSIZE', (0, 1), (-1, -1), 10),
-        ('BOTTOMPADDING', (0, 1), (-1, -1), 8),
-        ('GRID', (0, 0), (-1, -1), 1, colors.black)
+    # Estilo de las celdas de la tabla
+        ('FONTNAME', (0, 0), (-1, -1), 'Helvetica'),  # Estilo de fuente
+        ('FONTSIZE', (0, 0), (-1, -1), 7.2),  # Tamaño de fuente
+        ('BACKGROUND', (0, 0), (-1, 0), colors.grey),  # Color de fondo de la fila del encabezado
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),  # Color de texto de la fila del encabezado
+        ('ALIGN', (0, 0), (-1, 0), 'CENTER'),  # Alineación del texto en la fila del encabezado
+        ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),  # Estilo de fuente
+        ('FONTSIZE', (0, 1), (-1, -1), 4.5),  # Tamaño de fuente
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),  # Alineación del texto en todas las celdas
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),  # Alineación vertical del texto en todas las celdas
+        ('GRID', (0, 0), (-1, -1), 0.5, colors.grey),  # Estilo de las líneas de la tabla
     ]))
-    table.wrapOn(c, 500, 200)
-    table.drawOn(c, 30, 480)
+    # pdf size
+    table.wrapOn(c, width, height)
+    table.drawOn(c, 30, high)
+    c.showPage() # save page
 
-    # Add a section with the summary of the academic record
-    c.setFont('Helvetica-Bold', 16)
-    c.drawString(30, 430, 'Resumen del Reporte Académico')
-
-    c.setFont('Helvetica', 14)
-    c.drawString(30, 390, f'Créditos totales aprobados: {suma_creditos}')
-
-    c.setFont('Helvetica', 14)
-    c.drawString(30, 350, f'Promedio general de cursos aprobados: {promedio_general:.1f}')
-
-    # Close the PDF object cleanly, and we're done.
-    c.showPage()
+    # save pdf
     c.save()
-
-    # FileResponse sets the Content-Disposition header so that browsers
-    # present the option to save the file.
-    buffer.seek(0)
-    response.write(buffer.getvalue())
+    #get the value of BytesIO buffer and write response
+    pdf = buffer.getvalue()
     buffer.close()
-
+    response.write(pdf)
     return response
-
 
 
