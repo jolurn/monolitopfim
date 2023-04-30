@@ -77,24 +77,24 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'monolito.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'db_fimapp',
-        'USER': 'postgres',
-        'PASSWORD': '123456PFIMU',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
-}
-
-
 # DATABASES = {
-#     'default': dj_database_url.config(
-#     default='postgresql://postgres:123456PFIMU@localhost/prueba',
-#     conn_max_age=600
-#     )    
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'db_fimapp',
+#         'USER': 'postgres',
+#         'PASSWORD': '123456PFIMU',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
 # }
+
+
+DATABASES = {
+    'default': dj_database_url.config(
+    default='postgresql://postgres:123456PFIMU@localhost/prueba',
+    conn_max_age=600
+    )    
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
