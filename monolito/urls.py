@@ -32,5 +32,7 @@ urlpatterns = [
     path('change-password/', views.CustomPasswordChangeView.as_view(), name='password_change'),
     path('signin/', LoginView.as_view(template_name='signin.html'), name='signin'),
 
+    path('generar-pdf/', views.generar_pdf, name='generar-pdf'),
+
     path('accounts/profile/', RedirectView.as_view(url='/', permanent=False)),
 ]

@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-# import pymysql
+
 from pathlib import Path
 import os
 import dj_database_url
@@ -33,7 +33,7 @@ ALLOWED_HOSTS = []
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
-# pymysql.install_as_MySQLdb()
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -77,13 +77,24 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'monolito.wsgi.application'
 
-
 DATABASES = {
-    'default': dj_database_url.config(
-    default='postgresql://postgres:123456PFIMU@localhost/prueba',
-    conn_max_age=600
-    )    
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'db_fimapp',
+        'USER': 'postgres',
+        'PASSWORD': '123456PFIMU',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
 }
+
+
+# DATABASES = {
+#     'default': dj_database_url.config(
+#     default='postgresql://postgres:123456PFIMU@localhost/prueba',
+#     conn_max_age=600
+#     )    
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -122,6 +133,11 @@ USE_TZ = True
 
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = None
+
+
 if not DEBUG:    # Tell Django to copy statics to the `staticfiles` directory
     # in your application directory on Render.
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
