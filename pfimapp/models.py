@@ -149,7 +149,11 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
    
         
     def nombre_completos(self):
-        return "{} {}, {} {}".format(self.apellidoPaterno, self.apellidoMaterno, self.primerNombre, self.segundoNombre)
+        if self.segundoNombre:
+            return "{} {} {} {}".format(self.apellidoPaterno, self.apellidoMaterno, self.primerNombre, self.segundoNombre)
+        else:
+            return "{} {} {}".format(self.apellidoPaterno, self.apellidoMaterno, self.primerNombre)
+
 
     def __str__(self):
         return self.nombre_completos()
