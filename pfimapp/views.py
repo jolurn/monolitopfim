@@ -27,6 +27,7 @@ from PIL import Image
 from django.templatetags.static import static
 from django.conf import settings
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 def home(request):
     return render(request,'home.html')
@@ -43,11 +44,26 @@ def signup(request):
     return render(request, 'signup.html', {'form': form})
 
 @method_decorator(login_required, name='dispatch')
-class CustomUserUpdateView(UpdateView):
+class CustomUserUpdateView(LoginRequiredMixin, UpdateView):
     model = CustomUser
     template_name = 'customuser_form.html'
     form_class = CustomUserForm
     success_url = reverse_lazy('home')
+
+    def get_object(self, queryset=None):
+        """
+        Retorna el objeto CustomUser que se va a editar. Sólo permite editar al usuario autenticado.
+        """
+        if queryset is None:
+            queryset = self.get_queryset()
+
+        pk = self.kwargs.get('pk', None)
+        if pk is not None:
+            if self.request.user.pk == pk:
+                obj = get_object_or_404(queryset, pk=pk)
+                return obj
+
+        return self.request.user
 
 @login_required
 def reporteEconomico(request):

@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'monolito.wsgi.application'
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'db_fimapp',
+#         'NAME': 'prueba',
 #         'USER': 'postgres',
 #         'PASSWORD': '123456PFIMU',
 #         'HOST': 'localhost',
