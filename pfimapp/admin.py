@@ -1,5 +1,6 @@
 from django.contrib import admin
 from pfimapp.models import DetalleMatricula,Matricula,Seccion,Docente,Curso,CustomUser,TipoDocumento,Maestria,EstadoCivil,Sede,ReporteEcoConceptoPago,ReporteEconomico,ConceptoPago,Periodo,Alumno,EstadoAcademico,EstadoBoletaP
+from django import forms
 
 # Register your models here.
 class SeccionForm(forms.ModelForm):
@@ -230,7 +231,7 @@ class AlumnoAdmin(admin.ModelAdmin):
                     'codigoUniPreGrado', 'estadoAcademico', 'estado', 'fechaRegistro')
 
     form = AlumnoForm
-    
+
     def save_model(self, request, obj, form, change):
         # request.user es el usuario autenticado en ese momento
 
