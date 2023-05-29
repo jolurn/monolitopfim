@@ -2,6 +2,17 @@ from django.contrib import admin
 from pfimapp.models import DetalleMatricula,Matricula,Seccion,Docente,Curso,CustomUser,TipoDocumento,Maestria,EstadoCivil,Sede,ReporteEcoConceptoPago,ReporteEconomico,ConceptoPago,Periodo,Alumno,EstadoAcademico,EstadoBoletaP
 
 # Register your models here.
+class SeccionForm(forms.ModelForm):
+    class Meta:
+        model = Seccion
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Filtrar los docentes por la maestría seleccionada
+        maestria = self.instance.maestria if self.instance else None
+        self.fields['docente'].queryset = Docente.objects.filter(maestria=maestria)
+
 class SeccionAdmin(admin.ModelAdmin):
     # Para que sea mas facil de encontrar a la hora de crear una matricula
     search_fields = ['periodo__codigo', 'maestria__codigo', 'curso__codigo']
@@ -12,6 +23,8 @@ class SeccionAdmin(admin.ModelAdmin):
 # ----- Fin poner en solo lectura los input -----
     list_display = ('curso', 'docente', 'periodo', 'maestria',
                     'aulaWeb', 'estado', 'fechaRegistro')
+
+    form = SeccionForm
 
     def save_model(self, request, obj, form, change):
         # request.user es el usuario autenticado en ese momento
@@ -195,6 +208,16 @@ class MaestriaAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Maestria, MaestriaAdmin)
+class AlumnoForm(forms.ModelForm):
+    class Meta:
+        model = Alumno
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Filtrar los alumnos por la maestría seleccionada
+        maestria = self.instance.maestria if self.instance else None
+        self.fields['usuario'].queryset = CustomUser.objects.filter(alumnos__maestria=maestria)
 
 class AlumnoAdmin(admin.ModelAdmin):
     search_fields = ['usuario__apellidoPaterno', 'usuario__numeroDocumento']
@@ -206,6 +229,8 @@ class AlumnoAdmin(admin.ModelAdmin):
     list_display = ('usuario', 'maestria', 'periodoDeIngreso',
                     'codigoUniPreGrado', 'estadoAcademico', 'estado', 'fechaRegistro')
 
+    form = AlumnoForm
+    
     def save_model(self, request, obj, form, change):
         # request.user es el usuario autenticado en ese momento
 
