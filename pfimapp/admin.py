@@ -3,16 +3,6 @@ from pfimapp.models import DetalleMatricula,Matricula,Seccion,Docente,Curso,Cust
 from django import forms
 
 # Register your models here.
-class SeccionForm(forms.ModelForm):
-    class Meta:
-        model = Seccion
-        fields = '__all__'
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # Filtrar los docentes por la maestría seleccionada
-        maestria = self.instance.maestria if self.instance else None
-        self.fields['docente'].queryset = Docente.objects.filter(maestria=maestria)
 
 class SeccionAdmin(admin.ModelAdmin):
     # Para que sea mas facil de encontrar a la hora de crear una matricula
@@ -24,9 +14,7 @@ class SeccionAdmin(admin.ModelAdmin):
 # ----- Fin poner en solo lectura los input -----
     list_display = ('curso', 'docente', 'periodo', 'maestria',
                     'aulaWeb', 'estado', 'fechaRegistro')
-
-    form = SeccionForm
-
+ 
     def save_model(self, request, obj, form, change):
         # request.user es el usuario autenticado en ese momento
 
