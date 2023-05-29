@@ -303,7 +303,7 @@ class Docente(models.Model):
     usuarioPosgradoFIM = models.CharField(null=True, blank=True, max_length=200)
 
     def nombre_completo(self):
-        return "{} {}, {} {}".format(self.usuario.apellidoPaterno, self.usuario.apellidoMaterno, self.usuario.primerNombre, self.usuario.segundoNombre)
+        return "{} {}, {} {}".format(self.usuario.apellidoPaterno, self.usuario.apellidoMaterno, self.usuario.primerNombre, self.usuario.segundoNombre, self.maestria.codigo)
 
     def __str__(self):
         return self.nombre_completo()
