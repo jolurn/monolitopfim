@@ -197,16 +197,6 @@ class MaestriaAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Maestria, MaestriaAdmin)
-class AlumnoForm(forms.ModelForm):
-    class Meta:
-        model = Alumno
-        fields = '__all__'
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # Filtrar los alumnos por la maestría seleccionada
-        maestria = self.instance.maestria if self.instance else None
-        self.fields['usuario'].queryset = CustomUser.objects.filter(alumnos__maestria=maestria)
 
 class AlumnoAdmin(admin.ModelAdmin):
     search_fields = ['usuario__apellidoPaterno', 'usuario__numeroDocumento']
@@ -217,9 +207,7 @@ class AlumnoAdmin(admin.ModelAdmin):
 # ----- Fin poner en solo lectura los input -----
     list_display = ('usuario', 'maestria', 'periodoDeIngreso',
                     'codigoUniPreGrado', 'estadoAcademico', 'estado', 'fechaRegistro')
-
-    form = AlumnoForm
-
+   
     def save_model(self, request, obj, form, change):
         # request.user es el usuario autenticado en ese momento
 
