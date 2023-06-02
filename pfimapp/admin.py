@@ -25,7 +25,7 @@ class SeccionAdmin(admin.ModelAdmin):
 admin.site.register(Seccion, SeccionAdmin)
 
 class DocenteAdmin(admin.ModelAdmin):
-    search_fields = ['usuario__apellidoPaterno']
+    search_fields = ['usuario__apellidoPaterno', 'usuario__numeroDocumento']
     autocomplete_fields = ['usuario','maestria']
     # --- poner en solo lectura los input ---
     exclude = ('fechaRegistro', 'fechaModificado','usuarioPosgradoFIM', 'ipUsuario')
@@ -43,7 +43,7 @@ class DocenteAdmin(admin.ModelAdmin):
 admin.site.register(Docente, DocenteAdmin)
 
 class CursoAdmin(admin.ModelAdmin):
-    search_fields = ['codigo']
+    search_fields = ['codigo','nombre']
     ordering = ['codigo']
     # --- poner en solo lectura los input ---
     exclude = ('fechaRegistro', 'fechaModificado','usuarioPosgradoFIM', 'ipUsuario')
