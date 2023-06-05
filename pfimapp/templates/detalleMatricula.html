@@ -13,7 +13,9 @@
         </div>
         <div>
           <span>NOMBRES :</span> {{ user.primerNombre|upper }}
-          {{user.segundoNombre|upper }}
+          {% if user.segundoNombre %}
+            {{ user.segundoNombre|upper }}
+          {% endif %} 
         </div>
         <div><span>ESPECIALIDAD :</span> {{ user.maestria.nombre }}</div>
         {% if alumno_login.codigoAlumPFIM %}

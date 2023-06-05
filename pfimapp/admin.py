@@ -242,11 +242,10 @@ class ReporteEcoConceptoPagoAdmin(admin.TabularInline):
     exclude = ('fechaRegistro', 'fechaModificado','usuarioPosgradoFIM', 'ipUsuario')
     readonly_fields = ('fechaRegistro', 'fechaModificado','usuarioPosgradoFIM', 'ipUsuario')
 # ----- Fin poner en solo lectura los input -----
-
     def save_model(self, request, obj, form, change):
         # request.user es el usuario autenticado en ese momento
 
-        obj.usuarioPosgradoFIM = request.user.apellidoPaterno+' '+request.user.apellidoMaterno+' '+request.user.primerNombre
+        obj.usuarioPosgradoFIM = f'{request.user.apellidoPaterno} {request.user.apellidoMaterno} {request.user.primerNombre}'
         super().save_model(request, obj, form, change)
 
 
@@ -265,7 +264,7 @@ class ReporteEconomicoAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         # request.user es el usuario autenticado en ese momento
 
-        obj.usuarioPosgradoFIM = request.user.apellidoPaterno+' '+request.user.apellidoMaterno+' '+request.user.primerNombre
+        obj.usuarioPosgradoFIM = f'{request.user.apellidoPaterno} {request.user.apellidoMaterno} {request.user.primerNombre}'
         super().save_model(request, obj, form, change)
 
 
