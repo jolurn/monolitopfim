@@ -1,7 +1,9 @@
 from django.contrib import admin
 from pfimapp.models import DetalleMatricula,Matricula,Seccion,Docente,Curso,CustomUser,TipoDocumento,Maestria,EstadoCivil,Sede,ReporteEcoConceptoPago,ReporteEconomico,ConceptoPago,Periodo,Alumno,EstadoAcademico,EstadoBoletaP
+from django import forms
 
 # Register your models here.
+
 class SeccionAdmin(admin.ModelAdmin):
     # Para que sea mas facil de encontrar a la hora de crear una matricula
     search_fields = ['periodo__codigo', 'maestria__codigo', 'curso__codigo']
@@ -12,7 +14,7 @@ class SeccionAdmin(admin.ModelAdmin):
 # ----- Fin poner en solo lectura los input -----
     list_display = ('curso', 'docente', 'periodo', 'maestria',
                     'aulaWeb', 'estado', 'fechaRegistro')
-
+ 
     def save_model(self, request, obj, form, change):
         # request.user es el usuario autenticado en ese momento
 
@@ -23,7 +25,7 @@ class SeccionAdmin(admin.ModelAdmin):
 admin.site.register(Seccion, SeccionAdmin)
 
 class DocenteAdmin(admin.ModelAdmin):
-    search_fields = ['usuario__apellidoPaterno']
+    search_fields = ['usuario__apellidoPaterno', 'usuario__numeroDocumento']
     autocomplete_fields = ['usuario','maestria']
     # --- poner en solo lectura los input ---
     exclude = ('fechaRegistro', 'fechaModificado','usuarioPosgradoFIM', 'ipUsuario')
@@ -41,7 +43,7 @@ class DocenteAdmin(admin.ModelAdmin):
 admin.site.register(Docente, DocenteAdmin)
 
 class CursoAdmin(admin.ModelAdmin):
-    search_fields = ['codigo']
+    search_fields = ['codigo','nombre']
     ordering = ['codigo']
     # --- poner en solo lectura los input ---
     exclude = ('fechaRegistro', 'fechaModificado','usuarioPosgradoFIM', 'ipUsuario')
@@ -205,7 +207,7 @@ class AlumnoAdmin(admin.ModelAdmin):
 # ----- Fin poner en solo lectura los input -----
     list_display = ('usuario', 'maestria', 'periodoDeIngreso',
                     'codigoUniPreGrado', 'estadoAcademico', 'estado', 'fechaRegistro')
-
+   
     def save_model(self, request, obj, form, change):
         # request.user es el usuario autenticado en ese momento
 
