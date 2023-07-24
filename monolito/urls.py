@@ -23,6 +23,17 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
     path('signup/', views.signup, name='signup'),
+    path('adminLogin/', views.admin_login, name='admin_login'),
+
+    path('adminDashboard/', views.admin_dashboard, name='admin_dashboard'),
+    path('reporte-calificaciones/', views.reporte_calificaciones, name='reporte_calificaciones'),
+    # path('matricula/', views.matricula, name='matricula'),
+    path('registro-pagos/', views.registro_pagos, name='registro_pagos'),
+    path('obtener-alumnos-por-sede/', views.obtener_alumnos_por_sede, name='obtener_alumnos_por_sede'),
+    path('obtener-alumnos-por-periodo/', views.obtener_alumnos_por_periodo, name='obtener_alumnos_por_periodo'),    
+    path('generar_reporte_boleta_matricula/', views.generar_reporte_boleta_matricula, name='generar_reporte_boleta_matricula'),
+
+
     path('usuarios/editar/<int:pk>/', views.CustomUserUpdateView.as_view(), name='customuser_update'),
     path('matricula/<int:matricula_id>/', views.detalleMatricula, name='detalle_matricula'),
     path('reporteMatricula/', views.reporteMatricula, name='reporteMatricula'),  
@@ -31,8 +42,11 @@ urlpatterns = [
     path('logout/', views.signout, name='logount'),
     path('change-password/', views.CustomPasswordChangeView.as_view(), name='password_change'),
     path('signin/', LoginView.as_view(template_name='signin.html'), name='signin'),
-
+    
     path('generar-pdf/', views.generar_pdf, name='generar-pdf'),
+    path('generar-pdf-admin/', views.generar_pdf_administrativo, name='generar_pdf_administrativo'),
+    path('generar_pdf_pagos-admin/', views.generar_pdf_pagos, name='generar_pdf_pagos'),
+    path('generar_pdf_boleta_matricula/', views.generar_pdf_boleta_matricula, name='generar_pdf_boleta_matricula'),
 
     path('accounts/profile/', RedirectView.as_view(url='/', permanent=False)),
 ]

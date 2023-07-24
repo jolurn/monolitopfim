@@ -236,10 +236,13 @@ class Alumno(models.Model):
     fechaModificado = models.DateField(null=True, blank=True, auto_now=True)    
     ipUsuario = models.CharField(null=True, default=s.getsockname()[0], blank=True, max_length=100)
     usuarioPosgradoFIM = models.CharField(null=True, blank=True, max_length=200)
-
+    
     def nombre_completo(self):
-        return "{} {} {} {}, {}".format(self.usuario.apellidoPaterno, self.usuario.apellidoMaterno, self.usuario.primerNombre, self.usuario.segundoNombre, self.maestria.codigo)
-
+        if self.usuario.segundoNombre:
+            return "{} {} {} {}".format(self.usuario.apellidoPaterno, self.usuario.apellidoMaterno, self.usuario.primerNombre, self.usuario.segundoNombre)
+        else:
+            return "{} {} {}".format(self.usuario.apellidoPaterno, self.usuario.apellidoMaterno, self.usuario.primerNombre)
+        
     def __str__(self):
         return self.nombre_completo()
 
@@ -369,6 +372,7 @@ class DetalleMatricula(models.Model):
     ipUsuario = models.CharField(null=True, default=s.getsockname()[0], blank=True, max_length=100)
     usuarioPosgradoFIM = models.CharField(null=True, blank=True, max_length=200)
 
+    
     def __str__(self):
         return "{}  {}, {} {}".format(self.matricula.alumno.usuario.apellidoPaterno, self.matricula.alumno.usuario.apellidoMaterno, self.seccion.curso, self.seccion.periodo)
 

@@ -151,3 +151,8 @@ footer {
   margin: 100px 0;
 }
 /* ----login--- */
+/* --- tabla reporte calificaciones de administrativos ---*/
+.small-font {
+  font-size: 12px;
+  /* Ajusta el tamaño de la fuente según tus necesidades */
+}
