@@ -33,6 +33,21 @@ from django.contrib.admin.views.decorators import staff_member_required
 
 from django.http import JsonResponse
 
+import re
+from django.db.models import F
+
+def extract_year_period(period_code):
+    match = re.search(r'(\d{4})-(\d)-', period_code)    
+    if match:
+        year = int(match.group(1))
+        period = int(match.group(2))
+        return year, period
+    return 0, 0
+
+def orden_periodo(period_code):
+    year, period = extract_year_period(period_code)
+    return (year, period, period_code)
+
 @login_required
 def obtener_alumnos_por_periodo(request):
     periodo_id = request.GET.get('periodo_id')
@@ -171,11 +186,13 @@ def reporte_calificaciones(request):
     detalleAcademico = DetalleMatricula.objects.none()  # Crear un queryset vacío
 
     if sede_id or alumno_id:
+                
         # Aplicar los filtros solo si se proporciona al menos uno de los parámetros
         detalleAcademico = DetalleMatricula.objects.all()
 
         if sede_id:
-            detalleAcademico = detalleAcademico.filter(matricula__alumno__usuario__sede_id=sede_id)
+            detalleAcademico = detalleAcademico.filter(matricula__alumno__usuario__sede_id=sede_id).order_by(F('seccion__periodo__codigo'))
+            # detalleAcademico = detalleAcademico.filter(matricula__alumno__usuario__sede_id=sede_id)
             alumnos = alumnos.filter(id=alumno_id, usuario__sede_id=sede_id)
 
         if alumno_id:
@@ -183,7 +200,7 @@ def reporte_calificaciones(request):
 
     # Verificar si hay resultados
     resultados_disponibles = detalleAcademico.exists()
-
+    
     usuario_actual = request.user
     alumno_actual = None
 
@@ -254,9 +271,9 @@ def reporteEconomico(request):
 
     return render(request, 'reporteEconomico.html', {'reporteEconomicos': detalleRepoEco, 'alumno_login': alumno_login})
 
-
 @login_required
 def reporteAcademico(request):
+    
     reporteAcad = DetalleMatricula.objects.filter(matricula__alumno__usuario=request.user, estado="A").order_by('seccion__periodo__codigo')
     
     if reporteAcad.exists():

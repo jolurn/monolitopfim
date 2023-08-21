@@ -26,6 +26,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', default='your secret key')
 # DEBUG=True
 DEBUG = 'RENDER' not in os.environ
 
+# ALLOWED_HOSTS = ['2a72-181-176-49-89.ngrok-free.app']
 ALLOWED_HOSTS = ['192.168.0.122']
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
@@ -147,3 +148,6 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# CSRF_TRUSTED_ORIGINS = ['http://2a72-181-176-49-89.ngrok-free.app', 'https://2a72-181-176-49-89.ngrok-free.app']
+

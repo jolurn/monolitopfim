@@ -49,7 +49,11 @@
     <div class="container">
       <h1>Reporte de Calificaciones</h1>
 
-      <form method="post" action="{% url 'reporte_calificaciones' %}" class="mb-3">
+      <form
+        method="post"
+        action="{% url 'reporte_calificaciones' %}"
+        class="mb-3"
+      >
         {% csrf_token %}
         <div class="form-group">
           <label for="sede">Sede:</label>
@@ -81,11 +85,11 @@
           <div id="project">
             {% if alumno_id %}
             <div><span>ALUMNO :</span> {{ alumnos.0|upper }}</div>
-            {% else  %}
+            {% else %}
             <span>ALUMNO :</span>
             {% endif %}
             <div>
-              <span>ESPECIALIDAD :</span> {{ detalleAcademico.0.seccion.maestria.nombre }}
+              <span>ESPECIALIDAD :</span> {{detalleAcademico.0.seccion.maestria.nombre }}
             </div>
           </div>
         </header>
@@ -123,6 +127,10 @@
             <td class="letraAzul small-font">
               <b>{{ detalle.promedioTrabajos }}</b>
             </td>
+            {% elif detalle.promedioTrabajos == None %}
+            <td class="letraRoja small-font">
+              <b>NSP</b>
+            </td>
             {% else %}
             <td class="letraRoja small-font">
               <b>{{ detalle.promedioTrabajos }}</b>
@@ -130,6 +138,10 @@
             {% endif %} {% if detalle.examenParcial >= 12 %}
             <td class="letraAzul small-font">
               <b>{{ detalle.examenParcial }}</b>
+            </td>
+            {% elif detalle.examenParcial == None %}
+            <td class="letraRoja small-font">
+              <b>NSP</b>
             </td>
             {% else %}
             <td class="letraRoja small-font">
@@ -139,6 +151,10 @@
             <td class="letraAzul small-font">
               <b>{{ detalle.examenFinal }}</b>
             </td>
+            {% elif detalle.examenFinal == None %}
+            <td class="letraRoja small-font">
+              <b>NSP</b>
+            </td>
             {% else %}
             <td class="letraRoja small-font">
               <b>{{ detalle.examenFinal }}</b>
@@ -146,6 +162,10 @@
             {% endif %} {% if detalle.promedioFinal >= 12 %}
             <td class="letraAzul small-font">
               <b>{{ detalle.promedioFinal }}</b>
+            </td>
+            {% elif detalle.promedioFinal == None %}
+            <td class="letraRoja small-font">
+              <b>NSP</b>
             </td>
             {% else %}
             <td class="letraRoja small-font">
